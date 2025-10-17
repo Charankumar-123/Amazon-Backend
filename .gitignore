@@ -1,0 +1,80 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# Eclipse files
+.classpath
+.project
+.settings/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+.idea/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+# Compiled class file
+*.class
+
+# Log files
+*.log
+
+# Maven build directory
+target/
+
+# Gradle build directory
+build/
+
+# Spring Boot application properties
+**/application.properties
+
+# Spring Boot log file
+/logs/
+
+# Temporary files
+*.tmp
+*.metadata
+uploaded_files/
+uploads/
+barcodes/
+payslips/
+*.zip
+
+# Ignore local SSL keystore
+/src/main/resources/local-ssl.p12
+
+
+
+
+.DS_Store
+/bin
+/generated
+/payslips/
+/uploads/
+/barcodes/
+/Appointment-Documents-Template
