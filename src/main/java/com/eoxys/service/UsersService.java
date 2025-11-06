@@ -105,7 +105,7 @@ public class UsersService {
         // Prepare response data
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("token", token);
-        responseData.put("userID", user.getUserID());
+        responseData.put("userID", user.getUserId());
         responseData.put("userName", user.getUserName());
         responseData.put("email", user.getEmail());
         responseData.put("mobile", user.getMobile());

@@ -20,7 +20,7 @@ import com.eoxys.dto.Response;
 import com.eoxys.entity.UsersEntity;
 import com.eoxys.service.UsersService;
 
-@RequestMapping("users")
+@RequestMapping("/users")
 @RestController
 public class UsersController {
 
@@ -28,7 +28,7 @@ public class UsersController {
 	@Autowired
 	private UsersService usersService;
 
-	@PostMapping("/add")
+	@PostMapping("/add-user")
 	@CrossOrigin(origins = "http://localhost:3000")
 	public ResponseEntity<Response> createUser(@RequestBody UsersEntity userEntity) {
 		System.out.println("controller user data=>" + userEntity);
@@ -39,37 +39,13 @@ public class UsersController {
 	}
 	
 	@CrossOrigin(origins = "http://localhost:3000")
-	@GetMapping("/getusers")
+	@GetMapping("/get-users")
 	public ResponseEntity<Response> gettingUser() {
         System.out.println("users =>"+usersService.gettingUser());
 //		return (ResponseEntity<userjson>) ResponseEntity.ok(usersService.gettingUser());
 		return new ResponseEntity<>(usersService.gettingUser(), HttpStatus.ACCEPTED);
 
 	}
-	
-	
-	@CrossOrigin(origins = "http://localhost:3000")
-	@GetMapping("/users/me")
-	public ResponseEntity<?> getCurrentUser(@AuthenticationPrincipal User userDetails) {
-	    UsersEntity user = usersService.findByEmail(userDetails.getUsername());
-	    if (user == null) {
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-	    }
-
-	    Map<String, Object> userInfo = new HashMap<>();
-	    userInfo.put("userID", user.getUserID());
-	    userInfo.put("userName", user.getUserName());
-	    userInfo.put("email", user.getEmail());
-	    userInfo.put("mobile", user.getMobile());
-	    userInfo.put("role", user.getRole());
-
-	    return ResponseEntity.ok(userInfo);
-	}
-
-
-
-	
-
 	
 	@CrossOrigin(origins = "http://localhost:3000")
 	@PostMapping("/login")
@@ -84,6 +60,25 @@ public class UsersController {
 	@PostMapping("/signup")
 	public ResponseEntity<Response> signUp(@RequestBody UsersEntity userEntity) {
 		return new ResponseEntity<>(usersService.signUp(userEntity), HttpStatus.ACCEPTED);
+	}
+	
+	
+	@CrossOrigin(origins = "http://localhost:3000")
+	@GetMapping("/users/me")
+	public ResponseEntity<?> getCurrentUser(@AuthenticationPrincipal User userDetails) {
+	    UsersEntity user = usersService.findByEmail(userDetails.getUsername());
+	    if (user == null) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+	    }
+
+	    Map<String, Object> userInfo = new HashMap<>();
+	    userInfo.put("userID", user.getUserId());
+	    userInfo.put("userName", user.getUserName());
+	    userInfo.put("email", user.getEmail());
+	    userInfo.put("mobile", user.getMobile());
+	    userInfo.put("role", user.getRole());
+
+	    return ResponseEntity.ok(userInfo);
 	}
 
 }

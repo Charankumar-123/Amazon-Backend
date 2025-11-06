@@ -44,7 +44,7 @@ public class UserPrincipal implements UserDetails {
     }
     
     public Long getUserId() {
-        return user.getUserID();
+        return user.getUserId();
     }
 
     // Required UserDetails methods (default implementations)

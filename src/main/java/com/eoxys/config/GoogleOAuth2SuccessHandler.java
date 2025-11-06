@@ -12,6 +12,7 @@ import com.eoxys.repository.UsersRepository;
 import com.eoxys.service.JWTService;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -45,8 +46,14 @@ public class GoogleOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 		
 		String token = jwtService.generateToken(user.getEmail());
 		
-//		response.sendRedirect("http://localhost:8080/login-success?token=" + token);
-		response.sendRedirect("http://localhost:3000/login-success?token=" + token);
+		Cookie cookie = new  Cookie("jwt_token", token);
+		cookie.setHttpOnly(true);
+		cookie.setSecure(true);
+		cookie.setPath("/");
+		cookie.setMaxAge(24 * 60 * 60);
+		
+		response.addCookie(cookie);
+		response.sendRedirect("http://localhost:3000/login-success");
 
 		
 	}
