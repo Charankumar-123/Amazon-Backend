@@ -2,7 +2,6 @@ package com.eoxys.config;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -13,6 +12,7 @@ import com.eoxys.repository.UsersRepository;
 import com.eoxys.service.JWTService;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +21,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GoogleOAuth2SuccessHandler implements AuthenticationSuccessHandler {
 	
-	@Autowired
-	private  UsersRepository usersRepository;
-	
-	@Autowired
-	private  JWTService jwtService;
+	private final UsersRepository usersRepository;
+	private final JWTService jwtService;
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -49,8 +46,14 @@ public class GoogleOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 		
 		String token = jwtService.generateToken(user.getEmail());
 		
-//		response.sendRedirect("http://localhost:8080/login-success?token=" + token);
-		response.sendRedirect("http://localhost:3000/login-success?token=" + token);
+		Cookie cookie = new  Cookie("jwt_token", token);
+		cookie.setHttpOnly(true);
+		cookie.setSecure(true);
+		cookie.setPath("/");
+		cookie.setMaxAge(24 * 60 * 60);
+		
+		response.addCookie(cookie);
+		response.sendRedirect("http://localhost:3000/login-success");
 
 		
 	}

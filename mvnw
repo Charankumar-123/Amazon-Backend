@@ -20,6 +20,7 @@
 
 # ----------------------------------------------------------------------------
 # Apache Maven Wrapper startup batch script, version 3.3.4
+# Apache Maven Wrapper startup batch script, version 3.3.2
 #
 # Optional ENV vars
 # -----------------
@@ -116,6 +117,8 @@ while IFS="=" read -r key value; do
   esac
 done <"$scriptDir/.mvn/wrapper/maven-wrapper.properties"
 [ -n "${distributionUrl-}" ] || die "cannot read distributionUrl property in $scriptDir/.mvn/wrapper/maven-wrapper.properties"
+done <"${0%/*}/.mvn/wrapper/maven-wrapper.properties"
+[ -n "${distributionUrl-}" ] || die "cannot read distributionUrl property in ${0%/*}/.mvn/wrapper/maven-wrapper.properties"
 
 case "${distributionUrl##*/}" in
 maven-mvnd-*bin.*)
@@ -134,6 +137,7 @@ maven-mvnd-*bin.*)
   ;;
 maven-mvnd-*) MVN_CMD=mvnd.sh _MVNW_REPO_PATTERN=/maven/mvnd/ ;;
 *) MVN_CMD="mvn${scriptName#mvnw}" _MVNW_REPO_PATTERN=/org/apache/maven/ ;;
+*) MVN_CMD="mvn${0##*/mvnw}" _MVNW_REPO_PATTERN=/org/apache/maven/ ;;
 esac
 
 # apply MVNW_REPOURL and calculate MAVEN_HOME
@@ -231,6 +235,7 @@ if [ -n "${distributionSha256Sum-}" ]; then
     exit 1
   elif command -v sha256sum >/dev/null; then
     if echo "$distributionSha256Sum  $TMP_DOWNLOAD_DIR/$distributionUrlName" | sha256sum -c - >/dev/null 2>&1; then
+    if echo "$distributionSha256Sum  $TMP_DOWNLOAD_DIR/$distributionUrlName" | sha256sum -c >/dev/null 2>&1; then
       distributionSha256Result=true
     fi
   elif command -v shasum >/dev/null; then
@@ -290,6 +295,8 @@ fi
 verbose "Found extracted Maven distribution directory: $actualDistributionDir"
 printf %s\\n "$distributionUrl" >"$TMP_DOWNLOAD_DIR/$actualDistributionDir/mvnw.url"
 mv -- "$TMP_DOWNLOAD_DIR/$actualDistributionDir" "$MAVEN_HOME" || [ -d "$MAVEN_HOME" ] || die "fail to move MAVEN_HOME"
+printf %s\\n "$distributionUrl" >"$TMP_DOWNLOAD_DIR/$distributionUrlNameMain/mvnw.url"
+mv -- "$TMP_DOWNLOAD_DIR/$distributionUrlNameMain" "$MAVEN_HOME" || [ -d "$MAVEN_HOME" ] || die "fail to move MAVEN_HOME"
 
 clean || :
 exec_maven "$@"
