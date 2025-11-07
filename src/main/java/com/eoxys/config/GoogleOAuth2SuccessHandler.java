@@ -48,12 +48,12 @@ public class GoogleOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 		
 		Cookie cookie = new  Cookie("jwt_token", token);
 		cookie.setHttpOnly(true);
-		cookie.setSecure(true);
+		cookie.setSecure(false);
 		cookie.setPath("/");
 		cookie.setMaxAge(24 * 60 * 60);
 		
 		response.addCookie(cookie);
-		response.sendRedirect("http://localhost:3000/login-success");
+		response.sendRedirect("http://localhost:3000/dashboard");
 
 		
 	}
